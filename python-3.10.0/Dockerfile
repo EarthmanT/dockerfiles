@@ -2,7 +2,7 @@ FROM python:3.10.0
 
 RUN useradd -d /home/circleci -m circleci
 
-RUN pip install virtualenv tox
+RUN pip3 install virtualenv tox4
 
 WORKDIR /home/circleci
 
