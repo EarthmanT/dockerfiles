@@ -8,4 +8,4 @@ WORKDIR /home/circleci
 
 USER 1000
 
-CMD cd /project && pip-compile --no-emit-index-url --output-file=requirements-3.6.txt requirements-3.6.in setup.py
+CMD cd /project && pip-compile --no-emit-index-url --output-file=requirements-3.6.txt requirements-3.6.in setup.py -vvv

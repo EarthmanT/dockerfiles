@@ -15,6 +15,12 @@ ENV HOME="/root"
 WORKDIR ${HOME}
 RUN apt-get install -y git
 
+RUN apt install gpg-agent -y
+RUN sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+RUN apt-get update
+RUN apt-get -y install postgresql
+
 RUN useradd -d /home/circleci -m circleci
 USER circleci
 WORKDIR /home/circleci
@@ -32,4 +38,4 @@ RUN pip3 install --upgrade pip
 
 RUN pip3 install --user virtualenv tox pip-tools
 RUN pip3 install urllib3==1.26.15 requests-toolbelt==0.10.1
-CMD cd /project && pip-compile --no-emit-index-url --output-file=requirements.txt requirements.in setup.py
+CMD cd /project && pip-compile --no-emit-index-url --output-file=requirements.txt requirements.in setup.py -vvv && sed -i -e 's/file:\/\/\/project\///g' requirements.txt
