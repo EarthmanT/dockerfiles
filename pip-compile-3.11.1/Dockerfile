@@ -24,15 +24,12 @@ RUN git clone --depth=1 https://github.com/pyenv/pyenv.git .pyenv
 ENV PYENV_ROOT="${HOME}/.pyenv"
 ENV PATH="/home/circleci/.local/bin:${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
 
-ENV PYTHON_VERSION=3.9
+ENV PYTHON_VERSION=3.11.1
 RUN pyenv install ${PYTHON_VERSION}
 RUN pyenv global ${PYTHON_VERSION}
 
 RUN pip3 install --upgrade pip
-# RUN pip3 uninstall bottle
-# RUN pip3 install bottle
-# RUN echo "\
-# getargspec = getfullargspec" >> /home/circleci/.pyenv/versions/3.11.1/lib/python3.11/inspect.py
-RUN pip3 install --user virtualenv tox
+
+RUN pip3 install --user virtualenv tox pip-tools
 RUN pip3 install urllib3==1.26.15 requests-toolbelt==0.10.1
-CMD cd /project && tox
+CMD cd /project && pip-compile --no-emit-index-url --output-file=requirements.txt requirements.in setup.py
