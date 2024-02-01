@@ -34,9 +34,10 @@ ENV PATH="/home/circleci/.local/bin:${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH
 ENV PYTHON_VERSION=3.11.1
 RUN pyenv install ${PYTHON_VERSION}
 RUN pyenv global ${PYTHON_VERSION}
+RUN git clone https://github.com/pyenv/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
 
 RUN pip3 install --upgrade pip
 
 RUN pip3 install --user virtualenv tox pip-tools
 RUN pip3 install urllib3==1.26.15 requests-toolbelt==0.10.1
-CMD cd /project && pip-compile --no-emit-index-url --output-file=requirements.txt requirements.in setup.py -vvv && sed -i -e 's/file:\/\/\/project\///g' requirements.txt
+CMD cd /project && make compile && pip-compile --no-emit-index-url --output-file=requirements.txt requirements.in setup.py -vvv && sed -i -e 's/file:\/\/\/project\///g' requirements.txt
