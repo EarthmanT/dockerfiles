@@ -2,6 +2,11 @@ FROM ubuntu:noble
 
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev software-properties-common libpq-dev libkrb5-dev python3-dev git dos2unix python3-distro
+RUN apt-get update
+RUN apt-get install -y sudo openssh-client
+RUN add-apt-repository ppa:sergiodj/libvirt
+RUN apt update
+RUN apt-get install -y libvirt-dev
 RUN update-ca-certificates
 
 ENV HOME="/root"

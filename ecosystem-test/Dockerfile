@@ -4,9 +4,6 @@ RUN apt-get update
 RUN apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev software-properties-common libpq-dev libkrb5-dev python3-dev git dos2unix
 RUN apt-get update
 RUN apt-get install -y sudo openssh-client
-RUN add-apt-repository ppa:sergiodj/libvirt
-RUN apt update
-RUN apt-get install -y libvirt-dev
 RUN update-ca-certificates
 
 ENV HOME="/root"
@@ -38,6 +35,11 @@ RUN pyenv global ${PYTHON_VERSION}
 RUN git clone https://github.com/pyenv/pyenv-virtualenv.git ${PYENV_ROOT}/plugins/pyenv-virtualenv
 RUN pip3 install --upgrade pip
 RUN pip3 install --user virtualenv tox pip-tools setuptools
+ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
+RUN pip3 install https://github.com/cloudify-incubator/cloudify-ecosystem-test/archive/latest.zip
 WORKDIR /project
+ENV GIT_CONFIG_COUNT=1
+ENV GIT_CONFIG_KEY_0=safe.directory
+ENV GIT_CONFIG_VALUE_0=*
 
-ENTRYPOINT [ "/bin/bash", "-c", "make" ]
+ENTRYPOINT [ "/bin/bash", "ecosystem-test"]
