@@ -39,5 +39,6 @@ RUN git clone https://github.com/pyenv/pyenv-virtualenv.git ${PYENV_ROOT}/plugin
 RUN pip3 install --upgrade pip
 RUN pip3 install --user virtualenv tox pip-tools setuptools
 WORKDIR /project
+RUN git config --global --add safe.directory /project
 
 ENTRYPOINT [ "/bin/bash", "-c", "make" ]
