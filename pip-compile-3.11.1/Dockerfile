@@ -4,6 +4,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev software-properties-common
+# RUN add-apt-repository ppa:sergiodj/libvirt
+RUN apt update
+RUN apt-get install -y git
+RUN apt-get install -y libvirt-dev
 RUN update-ca-certificates
 RUN echo "[global]\
 trusted-host = pypi.python.org\
@@ -13,7 +17,6 @@ trusted-host = pypi.python.org\
 
 ENV HOME="/root"
 WORKDIR ${HOME}
-RUN apt-get install -y git
 
 RUN apt install gpg-agent -y
 RUN sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
